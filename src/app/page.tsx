@@ -21,6 +21,8 @@ export default function Home() {
     deleteProject,
     startTimer,
     stopTimer,
+    pauseTimer,
+    resumeTimer,
     updateTimerNote,
     addManualEntry,
     updateEntry,
@@ -61,6 +63,8 @@ export default function Home() {
           timer={activeTimer}
           project={projects.find((p) => p.id === activeTimer.projectId)}
           onStop={stopTimer}
+          onPause={pauseTimer}
+          onResume={resumeTimer}
           onUpdateNote={updateTimerNote}
         />
       )}
@@ -87,6 +91,8 @@ export default function Home() {
             activeTimer={activeTimer}
             onStart={startTimer}
             onStop={stopTimer}
+            onPause={pauseTimer}
+            onResume={resumeTimer}
             onAdd={addProject}
             onUpdate={updateProject}
             onDelete={deleteProject}

@@ -20,7 +20,8 @@
       "Bash(gh repo:*)",
       "Bash(npx vercel:*)",
       "Bash(vercel --version)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

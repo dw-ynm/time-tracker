@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Square, Pencil, Trash2, Plus } from "lucide-react";
+import { Play, Square, Pause, Pencil, Trash2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Project, ActiveTimer } from "@/lib/types";
@@ -18,6 +18,8 @@ interface Props {
   activeTimer: ActiveTimer | null;
   onStart: (projectId: string) => void;
   onStop: () => void;
+  onPause: () => void;
+  onResume: () => void;
   onAdd: (name: string) => void;
   onUpdate: (id: string, name: string) => void;
   onDelete: (id: string) => void;
@@ -28,6 +30,8 @@ export function ProjectList({
   activeTimer,
   onStart,
   onStop,
+  onPause,
+  onResume,
   onAdd,
   onUpdate,
   onDelete,
@@ -157,15 +161,35 @@ export function ProjectList({
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                   {isActive ? (
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={onStop}
-                      className="ml-1"
-                    >
-                      <Square className="h-3.5 w-3.5 mr-1 fill-current" />
-                      Stop
-                    </Button>
+                    <div className="flex items-center gap-1 ml-1">
+                      {activeTimer?.paused ? (
+                        <Button
+                          size="sm"
+                          onClick={onResume}
+                          style={{ backgroundColor: project.color, color: "white" }}
+                        >
+                          <Play className="h-3.5 w-3.5 mr-1 fill-current" />
+                          Resume
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={onPause}
+                        >
+                          <Pause className="h-3.5 w-3.5 mr-1" />
+                          Pause
+                        </Button>
+                      )}
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        className="h-8 w-8"
+                        onClick={onStop}
+                      >
+                        <Square className="h-3.5 w-3.5 fill-current" />
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       size="sm"

@@ -65,15 +65,19 @@ export function useTimeTracker() {
 
       // Stop current timer if running
       if (activeTimer) {
-        const start = new Date(activeTimer.startTime);
-        const end = new Date(now);
+        const accumulated = activeTimer.accumulatedMs ?? 0;
+        const currentSegment = activeTimer.paused
+          ? 0
+          : Date.now() - new Date(activeTimer.startTime).getTime();
+        const totalDuration = accumulated + currentSegment;
+        const entryStart = new Date(Date.now() - totalDuration);
         const entry: TimeEntry = {
           id: uuid(),
           projectId: activeTimer.projectId,
-          date: format(start, "yyyy-MM-dd"),
-          startTime: activeTimer.startTime,
+          date: format(entryStart, "yyyy-MM-dd"),
+          startTime: entryStart.toISOString(),
           endTime: now,
-          duration: end.getTime() - start.getTime(),
+          duration: totalDuration,
           note: activeTimer.note,
         };
         setEntries((prev) => [...prev, entry]);
@@ -87,19 +91,40 @@ export function useTimeTracker() {
   const stopTimer = useCallback(() => {
     if (!activeTimer) return;
     const now = new Date().toISOString();
-    const start = new Date(activeTimer.startTime);
-    const end = new Date(now);
+    const accumulated = activeTimer.accumulatedMs ?? 0;
+    const currentSegment = activeTimer.paused
+      ? 0
+      : Date.now() - new Date(activeTimer.startTime).getTime();
+    const totalDuration = accumulated + currentSegment;
+    // Use original start time for the entry (first segment start)
+    const entryStart = new Date(Date.now() - totalDuration);
     const entry: TimeEntry = {
       id: uuid(),
       projectId: activeTimer.projectId,
-      date: format(start, "yyyy-MM-dd"),
-      startTime: activeTimer.startTime,
+      date: format(entryStart, "yyyy-MM-dd"),
+      startTime: entryStart.toISOString(),
       endTime: now,
-      duration: end.getTime() - start.getTime(),
+      duration: totalDuration,
       note: activeTimer.note,
     };
     setEntries((prev) => [...prev, entry]);
     setActiveTimer(null);
+  }, [activeTimer]);
+
+  const pauseTimer = useCallback(() => {
+    if (!activeTimer || activeTimer.paused) return;
+    const currentSegment = Date.now() - new Date(activeTimer.startTime).getTime();
+    const accumulated = (activeTimer.accumulatedMs ?? 0) + currentSegment;
+    setActiveTimer({ ...activeTimer, paused: true, accumulatedMs: accumulated });
+  }, [activeTimer]);
+
+  const resumeTimer = useCallback(() => {
+    if (!activeTimer || !activeTimer.paused) return;
+    setActiveTimer({
+      ...activeTimer,
+      paused: false,
+      startTime: new Date().toISOString(),
+    });
   }, [activeTimer]);
 
   const updateTimerNote = useCallback((note: string) => {
@@ -167,6 +192,8 @@ export function useTimeTracker() {
     deleteProject,
     startTimer,
     stopTimer,
+    pauseTimer,
+    resumeTimer,
     updateTimerNote,
     addManualEntry,
     updateEntry,

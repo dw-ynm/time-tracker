@@ -18,4 +18,6 @@ export interface ActiveTimer {
   projectId: string;
   startTime: string; // ISO string
   note?: string;
+  paused?: boolean;
+  accumulatedMs?: number; // ms accumulated before current run segment
 }

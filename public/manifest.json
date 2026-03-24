@@ -1,0 +1,22 @@
+{
+  "name": "Younium Time Tracker",
+  "short_name": "Time Tracker",
+  "description": "Time tracking for professional services teams",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#112134",
+  "theme_color": "#54B6BE",
+  "icons": [
+    {
+      "src": "/younium-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/younium-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

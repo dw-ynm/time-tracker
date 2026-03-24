@@ -1,7 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx --yes shadcn@latest init -d --style default --base-color neutral)"
+      "Bash(npx --yes shadcn@latest init -d --style default --base-color neutral)",
+      "Bash(npx shadcn@latest add dialog input label tabs card badge separator scroll-area -y)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:www.younium.com)",
+      "Bash(curl -sL \"https://support.younium.com/hc/theming_assets/01HZMB293M8ASQZZ8HRKYBTFGG\" -o /Users/denniswamelink/Desktop/claude/time-tracker/public/younium-logo.png)",
+      "Bash(curl -sL -o /dev/null -w \"%{url_effective}\\\\n%{content_type}\" \"https://support.younium.com/hc/theming_assets/01HZMB293M8ASQZZ8HRKYBTFGG\")",
+      "WebFetch(domain:support.younium.com)",
+      "Bash(curl -sL \"https://www.younium.com/hubfs/younium%20logo_horizontal_448X100.png\" -o /Users/denniswamelink/Desktop/claude/time-tracker/public/younium-logo.png)",
+      "Bash(identify /Users/denniswamelink/Desktop/claude/time-tracker/public/younium-logo.png)",
+      "Bash(curl -sL \"https://www.younium.com/hubfs/Younium_Favicon-1.png\" -o /Users/denniswamelink/Desktop/claude/time-tracker/public/younium-icon.png)",
+      "Bash(curl -sL \"https://www.younium.com/favicon.ico\" -o /Users/denniswamelink/Desktop/claude/time-tracker/public/favicon.ico)",
+      "Bash(npx --yes vercel --version)",
+      "Bash(git add:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(npx vercel:*)",
+      "Bash(vercel --version)",
+      "Bash(git commit:*)"
     ]
   }
 }

@@ -10,6 +10,7 @@ import {
   getWeekDays,
   getEntriesForWeek,
   formatHours,
+  formatBillableHours,
   totalDuration,
 } from "@/lib/time";
 
@@ -79,7 +80,7 @@ export function WeeklySummary({ entries, projects }: Props) {
     lines.push("");
 
     for (const { project, duration, notes } of projectTotals) {
-      lines.push(`${project?.name ?? "Unknown"}: ${formatHours(duration)}`);
+      lines.push(`${project?.name ?? "Unknown"}: ${formatHours(duration)} (billable: ${formatBillableHours(duration)})`);
       if (notes.length > 0) {
         for (const note of notes) {
           lines.push(`  - ${note}`);
@@ -91,12 +92,12 @@ export function WeeklySummary({ entries, projects }: Props) {
     lines.push("Daily breakdown:");
     for (const { day, total } of dayTotals) {
       if (total > 0) {
-        lines.push(`  ${format(day, "EEE, MMM d")}: ${formatHours(total)}`);
+        lines.push(`  ${format(day, "EEE, MMM d")}: ${formatHours(total)} (billable: ${formatBillableHours(total)})`);
       }
     }
 
     lines.push("");
-    lines.push(`Total: ${formatHours(weekTotal)}`);
+    lines.push(`Total: ${formatHours(weekTotal)} (billable: ${formatBillableHours(weekTotal)})`);
 
     navigator.clipboard.writeText(lines.join("\n"));
     setCopied(true);
@@ -121,6 +122,11 @@ export function WeeklySummary({ entries, projects }: Props) {
           <p className="text-2xl font-bold font-mono mt-1">
             {formatHours(weekTotal)}
           </p>
+          {weekTotal > 0 && (
+            <p className="text-sm text-muted-foreground font-mono">
+              Billable: {formatBillableHours(weekTotal)}
+            </p>
+          )}
         </div>
         <Button
           size="icon"
@@ -151,7 +157,11 @@ export function WeeklySummary({ entries, projects }: Props) {
                       {project?.name ?? "Deleted"}
                     </span>
                   </div>
-                  <span className="font-mono">{formatHours(duration)}</span>
+                  <span className="font-mono flex items-center gap-1.5">
+                    <span className="text-muted-foreground">{formatHours(duration)}</span>
+                    <span className="text-xs text-muted-foreground/60">→</span>
+                    <span>{formatBillableHours(duration)}</span>
+                  </span>
                 </div>
                 <div className="h-2 rounded-full bg-muted overflow-hidden">
                   <div
@@ -199,6 +209,11 @@ export function WeeklySummary({ entries, projects }: Props) {
               <p className="text-xs font-mono mt-1">
                 {total > 0 ? formatHours(total) : "–"}
               </p>
+              {total > 0 && (
+                <p className="text-xs font-mono text-muted-foreground">
+                  {formatBillableHours(total)}
+                </p>
+              )}
             </div>
           ))}
         </div>

@@ -9,6 +9,7 @@ import { Project, TimeEntry } from "@/lib/types";
 import {
   formatDuration,
   formatHours,
+  formatBillableHours,
   formatTimeOfDay,
   totalDuration,
 } from "@/lib/time";
@@ -187,8 +188,10 @@ export function DailyView({ entries, projects, onDeleteEntry, onUpdateEntry }: P
               <h3 className="font-semibold">
                 {format(parseISO(date), "EEEE, MMM d")}
               </h3>
-              <span className="text-sm text-muted-foreground font-mono">
-                {formatHours(dayTotal)}
+              <span className="text-sm font-mono flex items-center gap-1.5">
+                <span className="text-muted-foreground">{formatHours(dayTotal)}</span>
+                <span className="text-xs text-muted-foreground/60">→</span>
+                <span className="text-foreground">{formatBillableHours(dayTotal)}</span>
               </span>
             </div>
 
@@ -212,7 +215,7 @@ export function DailyView({ entries, projects, onDeleteEntry, onUpdateEntry }: P
                           backgroundColor: project?.color ?? "#666",
                         }}
                       />
-                      {project?.name ?? "Deleted"}: {formatHours(duration)}
+                      {project?.name ?? "Deleted"}: {formatHours(duration)} → {formatBillableHours(duration)}
                     </span>
                   );
                 }

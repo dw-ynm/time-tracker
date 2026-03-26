@@ -14,6 +14,19 @@ export function formatHours(ms: number): string {
   return `${hours.toFixed(1)}h`;
 }
 
+/** Round milliseconds up to the nearest half hour */
+export function roundToHalfHour(ms: number): number {
+  const halfHourMs = 1_800_000; // 30 minutes
+  return Math.ceil(ms / halfHourMs) * halfHourMs;
+}
+
+/** Format rounded billable hours, e.g. "2.0h" or "0.5h" */
+export function formatBillableHours(ms: number): string {
+  const rounded = roundToHalfHour(ms);
+  const hours = rounded / 3_600_000;
+  return `${hours.toFixed(1)}h`;
+}
+
 export function getWeekRange(date: Date = new Date()) {
   const start = startOfWeek(date, { weekStartsOn: 1 }); // Monday
   const end = endOfWeek(date, { weekStartsOn: 1 });
